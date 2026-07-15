@@ -1,6 +1,7 @@
 import { JwtPayload } from "jsonwebtoken";
 import { IBook } from "./book.interface";
 import { Book } from "./book.model";
+import AppError from "../../errors/AppError";
 
 const createBook = async (
     payload: Omit<IBook, "createdBy" | "rating" | "status">,
@@ -69,7 +70,45 @@ const getAllBooks = async (query: Record<string, unknown>) => {
     };
 };
 
+const getSingleBook = async (id: string) => {
+    const book = await Book.findById(id).populate(
+        "createdBy",
+        "name email"
+    );
+
+    if (!book) {
+        throw new AppError(404, "Book not found");
+    }
+
+    return book;
+};
+
+const deleteBook = async (id: string) => {
+    const book = await Book.findById(id);
+
+    if (!book) {
+        throw new AppError(404, "Book not found");
+    }
+
+    await Book.findByIdAndDelete(id);
+
+    return null;
+};
+
+const getMyBooks = async (userId: string) => {
+    const books = await Book.find({
+        createdBy: userId,
+    }).sort({
+        createdAt: -1,
+    });
+
+    return books;
+};
+
 export const BookService = {
     createBook,
-    getAllBooks
+    getAllBooks,
+    getSingleBook,
+    deleteBook,
+    getMyBooks
 };

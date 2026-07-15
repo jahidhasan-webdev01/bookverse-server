@@ -6,12 +6,44 @@ import { BookValidation } from "./book.validation";
 
 const router = Router();
 
+
+// Create Book (Protected)
 router.post(
     "/",
     auth,
     validateRequest(BookValidation.createBookValidationSchema),
     BookController.createBook
 );
-router.get("/", BookController.getAllBooks);
+
+
+// Get All Books (Public)
+router.get(
+    "/",
+    BookController.getAllBooks
+);
+
+
+// Get Logged User Books (Protected)
+router.get(
+    "/my-books",
+    auth,
+    BookController.getMyBooks
+);
+
+
+// Get Single Book (Public)
+router.get(
+    "/:id",
+    BookController.getSingleBook
+);
+
+
+// Delete Book (Protected)
+router.delete(
+    "/:id",
+    auth,
+    BookController.deleteBook
+);
+
 
 export const BookRoutes = router;
