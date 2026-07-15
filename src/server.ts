@@ -16,8 +16,8 @@ async function main() {
             console.log(`Server running on ${PORT}`);
         });
     } catch (error) {
-        console.log(error);
+        console.log("Failed to connect with database");
     }
-}
+} 
 
 main();
