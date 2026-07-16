@@ -11,8 +11,6 @@ async function connectDB() {
     );
 
     isConnected = true;
-
-    console.log("MongoDB Connected");
 }
 
 
