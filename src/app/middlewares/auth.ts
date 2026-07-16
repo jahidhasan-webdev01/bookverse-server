@@ -17,8 +17,6 @@ const auth = (
 
   const token = req.cookies.token;
 
-  console.log("token", token);
-
   if (!token) {
     return next(
       new AppError(
@@ -32,8 +30,6 @@ const auth = (
 
     const decoded =
       JwtHandler.verifyToken(token) as JwtUser;
-
-    console.log("decoded", decoded);
 
     req.user = decoded;
 

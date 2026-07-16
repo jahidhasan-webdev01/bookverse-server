@@ -7,8 +7,6 @@ const createBook = async (
     payload: Omit<IBook, "createdBy" | "rating" | "status">,
     user: JwtPayload
 ) => {
-    console.log("payload", payload);
-    console.log("IDD", user);
     const book = await Book.create({
         ...payload,
         createdBy: user.userId,

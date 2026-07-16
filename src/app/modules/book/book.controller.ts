@@ -4,7 +4,6 @@ import catchAsync from "../../utils/catchAsync";
 import { BookService } from "./book.service";
 
 const createBook = catchAsync(async (req: Request, res: Response) => {
-    console.log("req.user", req.user);
     const result = await BookService.createBook(
         req.body,
         req.user as JwtPayload
@@ -50,8 +49,6 @@ const deleteBook = catchAsync(async (req, res) => {
 
 const getMyBooks = catchAsync(async (req, res) => {
     const userId = req.user.userId;
-
-    console.log("userId lele", userId);
 
     const result = await BookService.getMyBooks(
         userId
