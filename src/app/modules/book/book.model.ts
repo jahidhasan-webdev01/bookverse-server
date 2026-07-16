@@ -45,6 +45,7 @@ const bookSchema = new Schema<IBook>(
 
         rating: {
             type: Number,
+            required: true,
             default: 5,
             min: 1,
             max: 5,

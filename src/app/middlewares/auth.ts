@@ -1,33 +1,53 @@
 import { NextFunction, Request, Response } from "express";
-import { JwtPayload } from "jsonwebtoken";
 import AppError from "../errors/AppError";
 import { JwtHandler } from "../utils/jwtHandler";
+
+interface JwtUser {
+  userId: string;
+  name: string;
+  email: string;
+  role: string;
+}
 
 const auth = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const authorization = req.headers.authorization;
 
-  if (!authorization) {
-    return next(new AppError(401, "You are not authorized"));
-  }
+  const token = req.cookies.token;
 
-  const token = authorization.split(" ")[1];
+  console.log("token", token);
 
   if (!token) {
-    return next(new AppError(401, "Invalid token"));
+    return next(
+      new AppError(
+        401,
+        "You are not authorized"
+      )
+    );
   }
 
   try {
-    const decoded = JwtHandler.verifyToken(token) as JwtPayload;
+
+    const decoded =
+      JwtHandler.verifyToken(token) as JwtUser;
+
+    console.log("decoded", decoded);
 
     req.user = decoded;
 
     next();
+
   } catch {
-    next(new AppError(401, "Invalid or expired token"));
+
+    next(
+      new AppError(
+        401,
+        "Invalid or expired token"
+      )
+    );
+
   }
 };
 
